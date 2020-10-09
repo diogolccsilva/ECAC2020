@@ -13,7 +13,7 @@
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="45" y="34">
-        <parameter key="repository_entry" value="//ECAC 2/processed_data/loanTrainProcessed"/>
+        <parameter key="repository_entry" value="../../processed_data/loanTrainProcessed"/>
       </operator>
       <operator activated="true" class="select_attributes" compatibility="9.4.001" expanded="true" height="82" name="Select Attributes" width="90" x="179" y="34">
         <parameter key="attribute_filter_type" value="subset"/>
