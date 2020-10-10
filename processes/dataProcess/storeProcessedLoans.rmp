@@ -15,8 +15,8 @@
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loan_train" width="90" x="112" y="34">
         <parameter key="repository_entry" value="../../data/loan_train"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="82" name="Execute processLoans" width="90" x="246" y="34">
-        <parameter key="process_location" value="//ECAC 2/processes/dataProcess/processLoans"/>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute processLoans" width="90" x="246" y="34">
+        <parameter key="process_location" value="processLoans"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
@@ -30,8 +30,8 @@
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loan_test" width="90" x="112" y="136">
         <parameter key="repository_entry" value="../../data/loan_test"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="82" name="Execute processLoans (2)" width="90" x="246" y="136">
-        <parameter key="process_location" value="//ECAC 2/processes/dataProcess/processLoans"/>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute processLoans (2)" width="90" x="246" y="136">
+        <parameter key="process_location" value="processLoans"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
