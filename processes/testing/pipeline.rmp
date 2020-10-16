@@ -12,10 +12,215 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="112" y="34">
+      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="45" y="34">
         <parameter key="repository_entry" value="../../processed_data/loanTrainProcessed"/>
       </operator>
-      <operator activated="true" class="split_validation" compatibility="9.4.001" expanded="true" height="124" name="Validation" width="90" x="313" y="34">
+      <operator activated="true" class="filter_examples" compatibility="9.4.001" expanded="true" height="103" name="Filter Year 93" width="90" x="179" y="34">
+        <parameter key="parameter_expression" value=""/>
+        <parameter key="condition_class" value="custom_filters"/>
+        <parameter key="invert_filter" value="false"/>
+        <list key="filters_list">
+          <parameter key="filters_entry_key" value="loanYear.equals.93"/>
+        </list>
+        <parameter key="filters_logic_and" value="true"/>
+        <parameter key="filters_check_metadata" value="true"/>
+      </operator>
+      <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest 93" width="90" x="447" y="34">
+        <parameter key="number_of_trees" value="100"/>
+        <parameter key="criterion" value="gain_ratio"/>
+        <parameter key="maximal_depth" value="10"/>
+        <parameter key="apply_pruning" value="false"/>
+        <parameter key="confidence" value="0.1"/>
+        <parameter key="apply_prepruning" value="false"/>
+        <parameter key="minimal_gain" value="0.01"/>
+        <parameter key="minimal_leaf_size" value="2"/>
+        <parameter key="minimal_size_for_split" value="4"/>
+        <parameter key="number_of_prepruning_alternatives" value="3"/>
+        <parameter key="random_splits" value="false"/>
+        <parameter key="guess_subset_ratio" value="true"/>
+        <parameter key="subset_ratio" value="0.2"/>
+        <parameter key="voting_strategy" value="confidence vote"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="enable_parallel_execution" value="true"/>
+      </operator>
+      <operator activated="true" class="filter_examples" compatibility="9.4.001" expanded="true" height="103" name="Filter Year 94" width="90" x="313" y="187">
+        <parameter key="parameter_expression" value=""/>
+        <parameter key="condition_class" value="custom_filters"/>
+        <parameter key="invert_filter" value="false"/>
+        <list key="filters_list">
+          <parameter key="filters_entry_key" value="loanYear.equals.94"/>
+        </list>
+        <parameter key="filters_logic_and" value="true"/>
+        <parameter key="filters_check_metadata" value="true"/>
+      </operator>
+      <operator activated="true" class="filter_examples" compatibility="9.4.001" expanded="true" height="103" name="Filter Year 95" width="90" x="447" y="340">
+        <parameter key="parameter_expression" value=""/>
+        <parameter key="condition_class" value="custom_filters"/>
+        <parameter key="invert_filter" value="false"/>
+        <list key="filters_list">
+          <parameter key="filters_entry_key" value="loanYear.equals.95"/>
+        </list>
+        <parameter key="filters_logic_and" value="true"/>
+        <parameter key="filters_check_metadata" value="true"/>
+      </operator>
+      <operator activated="false" class="split_validation" compatibility="9.4.001" expanded="true" height="124" name="Validation 96" width="90" x="246" y="493">
+        <parameter key="create_complete_model" value="false"/>
+        <parameter key="split" value="relative"/>
+        <parameter key="split_ratio" value="0.75"/>
+        <parameter key="training_set_size" value="100"/>
+        <parameter key="test_set_size" value="-1"/>
+        <parameter key="sampling_type" value="stratified sampling"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <process expanded="true">
+          <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest (4)" width="90" x="179" y="34">
+            <parameter key="number_of_trees" value="100"/>
+            <parameter key="criterion" value="gain_ratio"/>
+            <parameter key="maximal_depth" value="10"/>
+            <parameter key="apply_pruning" value="false"/>
+            <parameter key="confidence" value="0.1"/>
+            <parameter key="apply_prepruning" value="false"/>
+            <parameter key="minimal_gain" value="0.01"/>
+            <parameter key="minimal_leaf_size" value="2"/>
+            <parameter key="minimal_size_for_split" value="4"/>
+            <parameter key="number_of_prepruning_alternatives" value="3"/>
+            <parameter key="random_splits" value="false"/>
+            <parameter key="guess_subset_ratio" value="true"/>
+            <parameter key="subset_ratio" value="0.2"/>
+            <parameter key="voting_strategy" value="confidence vote"/>
+            <parameter key="use_local_random_seed" value="false"/>
+            <parameter key="local_random_seed" value="1992"/>
+            <parameter key="enable_parallel_execution" value="true"/>
+          </operator>
+          <connect from_port="training" to_op="Random Forest (4)" to_port="training set"/>
+          <connect from_op="Random Forest (4)" from_port="model" to_port="model"/>
+          <portSpacing port="source_training" spacing="0"/>
+          <portSpacing port="sink_model" spacing="0"/>
+          <portSpacing port="sink_through 1" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model (5)" width="90" x="112" y="34">
+            <list key="application_parameters"/>
+            <parameter key="create_view" value="false"/>
+          </operator>
+          <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance (4)" width="90" x="313" y="34">
+            <parameter key="manually_set_positive_class" value="false"/>
+            <parameter key="main_criterion" value="AUC"/>
+            <parameter key="accuracy" value="true"/>
+            <parameter key="classification_error" value="false"/>
+            <parameter key="kappa" value="false"/>
+            <parameter key="AUC (optimistic)" value="false"/>
+            <parameter key="AUC" value="false"/>
+            <parameter key="AUC (pessimistic)" value="false"/>
+            <parameter key="precision" value="false"/>
+            <parameter key="recall" value="false"/>
+            <parameter key="lift" value="false"/>
+            <parameter key="fallout" value="false"/>
+            <parameter key="f_measure" value="false"/>
+            <parameter key="false_positive" value="false"/>
+            <parameter key="false_negative" value="false"/>
+            <parameter key="true_positive" value="false"/>
+            <parameter key="true_negative" value="false"/>
+            <parameter key="sensitivity" value="false"/>
+            <parameter key="specificity" value="false"/>
+            <parameter key="youden" value="false"/>
+            <parameter key="positive_predictive_value" value="false"/>
+            <parameter key="negative_predictive_value" value="false"/>
+            <parameter key="psep" value="false"/>
+            <parameter key="skip_undefined_labels" value="true"/>
+            <parameter key="use_example_weights" value="true"/>
+          </operator>
+          <connect from_port="model" to_op="Apply Model (5)" to_port="model"/>
+          <connect from_port="test set" to_op="Apply Model (5)" to_port="unlabelled data"/>
+          <connect from_op="Apply Model (5)" from_port="labelled data" to_op="Performance (4)" to_port="labelled data"/>
+          <connect from_op="Performance (4)" from_port="performance" to_port="averagable 1"/>
+          <portSpacing port="source_model" spacing="0"/>
+          <portSpacing port="source_test set" spacing="0"/>
+          <portSpacing port="source_through 1" spacing="0"/>
+          <portSpacing port="sink_averagable 1" spacing="0"/>
+          <portSpacing port="sink_averagable 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="false" class="split_validation" compatibility="9.4.001" expanded="true" height="124" name="Validation 95" width="90" x="112" y="493">
+        <parameter key="create_complete_model" value="false"/>
+        <parameter key="split" value="relative"/>
+        <parameter key="split_ratio" value="0.75"/>
+        <parameter key="training_set_size" value="100"/>
+        <parameter key="test_set_size" value="-1"/>
+        <parameter key="sampling_type" value="stratified sampling"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <process expanded="true">
+          <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest (3)" width="90" x="179" y="34">
+            <parameter key="number_of_trees" value="100"/>
+            <parameter key="criterion" value="gain_ratio"/>
+            <parameter key="maximal_depth" value="10"/>
+            <parameter key="apply_pruning" value="false"/>
+            <parameter key="confidence" value="0.1"/>
+            <parameter key="apply_prepruning" value="false"/>
+            <parameter key="minimal_gain" value="0.01"/>
+            <parameter key="minimal_leaf_size" value="2"/>
+            <parameter key="minimal_size_for_split" value="4"/>
+            <parameter key="number_of_prepruning_alternatives" value="3"/>
+            <parameter key="random_splits" value="false"/>
+            <parameter key="guess_subset_ratio" value="true"/>
+            <parameter key="subset_ratio" value="0.2"/>
+            <parameter key="voting_strategy" value="confidence vote"/>
+            <parameter key="use_local_random_seed" value="false"/>
+            <parameter key="local_random_seed" value="1992"/>
+            <parameter key="enable_parallel_execution" value="true"/>
+          </operator>
+          <connect from_port="training" to_op="Random Forest (3)" to_port="training set"/>
+          <connect from_op="Random Forest (3)" from_port="model" to_port="model"/>
+          <portSpacing port="source_training" spacing="0"/>
+          <portSpacing port="sink_model" spacing="0"/>
+          <portSpacing port="sink_through 1" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model (4)" width="90" x="112" y="34">
+            <list key="application_parameters"/>
+            <parameter key="create_view" value="false"/>
+          </operator>
+          <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance (3)" width="90" x="313" y="34">
+            <parameter key="manually_set_positive_class" value="false"/>
+            <parameter key="main_criterion" value="AUC"/>
+            <parameter key="accuracy" value="true"/>
+            <parameter key="classification_error" value="false"/>
+            <parameter key="kappa" value="false"/>
+            <parameter key="AUC (optimistic)" value="false"/>
+            <parameter key="AUC" value="false"/>
+            <parameter key="AUC (pessimistic)" value="false"/>
+            <parameter key="precision" value="false"/>
+            <parameter key="recall" value="false"/>
+            <parameter key="lift" value="false"/>
+            <parameter key="fallout" value="false"/>
+            <parameter key="f_measure" value="false"/>
+            <parameter key="false_positive" value="false"/>
+            <parameter key="false_negative" value="false"/>
+            <parameter key="true_positive" value="false"/>
+            <parameter key="true_negative" value="false"/>
+            <parameter key="sensitivity" value="false"/>
+            <parameter key="specificity" value="false"/>
+            <parameter key="youden" value="false"/>
+            <parameter key="positive_predictive_value" value="false"/>
+            <parameter key="negative_predictive_value" value="false"/>
+            <parameter key="psep" value="false"/>
+            <parameter key="skip_undefined_labels" value="true"/>
+            <parameter key="use_example_weights" value="true"/>
+          </operator>
+          <connect from_port="model" to_op="Apply Model (4)" to_port="model"/>
+          <connect from_port="test set" to_op="Apply Model (4)" to_port="unlabelled data"/>
+          <connect from_op="Apply Model (4)" from_port="labelled data" to_op="Performance (3)" to_port="labelled data"/>
+          <connect from_op="Performance (3)" from_port="performance" to_port="averagable 1"/>
+          <portSpacing port="source_model" spacing="0"/>
+          <portSpacing port="source_test set" spacing="0"/>
+          <portSpacing port="source_through 1" spacing="0"/>
+          <portSpacing port="sink_averagable 1" spacing="0"/>
+          <portSpacing port="sink_averagable 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="false" class="split_validation" compatibility="9.4.001" expanded="true" height="124" name="Validation 93" width="90" x="112" y="187">
         <parameter key="create_complete_model" value="false"/>
         <parameter key="split" value="relative"/>
         <parameter key="split_ratio" value="0.75"/>
@@ -93,14 +298,247 @@
           <portSpacing port="sink_averagable 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTestProcessed" width="90" x="313" y="187">
+      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTestProcessed" width="90" x="1251" y="340">
         <parameter key="repository_entry" value="../../processed_data/loanTestProcessed"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model" width="90" x="514" y="34">
+      <operator activated="true" class="multiply" compatibility="9.4.001" expanded="true" height="103" name="Multiply 94" width="90" x="447" y="187"/>
+      <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest 94" width="90" x="581" y="187">
+        <parameter key="number_of_trees" value="100"/>
+        <parameter key="criterion" value="gain_ratio"/>
+        <parameter key="maximal_depth" value="10"/>
+        <parameter key="apply_pruning" value="false"/>
+        <parameter key="confidence" value="0.1"/>
+        <parameter key="apply_prepruning" value="false"/>
+        <parameter key="minimal_gain" value="0.01"/>
+        <parameter key="minimal_leaf_size" value="2"/>
+        <parameter key="minimal_size_for_split" value="4"/>
+        <parameter key="number_of_prepruning_alternatives" value="3"/>
+        <parameter key="random_splits" value="false"/>
+        <parameter key="guess_subset_ratio" value="true"/>
+        <parameter key="subset_ratio" value="0.2"/>
+        <parameter key="voting_strategy" value="confidence vote"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="enable_parallel_execution" value="true"/>
+      </operator>
+      <operator activated="false" class="split_validation" compatibility="9.4.001" expanded="true" height="124" name="Validation 94" width="90" x="112" y="340">
+        <parameter key="create_complete_model" value="false"/>
+        <parameter key="split" value="relative"/>
+        <parameter key="split_ratio" value="0.75"/>
+        <parameter key="training_set_size" value="100"/>
+        <parameter key="test_set_size" value="-1"/>
+        <parameter key="sampling_type" value="stratified sampling"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <process expanded="true">
+          <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest (2)" width="90" x="179" y="34">
+            <parameter key="number_of_trees" value="100"/>
+            <parameter key="criterion" value="gain_ratio"/>
+            <parameter key="maximal_depth" value="10"/>
+            <parameter key="apply_pruning" value="false"/>
+            <parameter key="confidence" value="0.1"/>
+            <parameter key="apply_prepruning" value="false"/>
+            <parameter key="minimal_gain" value="0.01"/>
+            <parameter key="minimal_leaf_size" value="2"/>
+            <parameter key="minimal_size_for_split" value="4"/>
+            <parameter key="number_of_prepruning_alternatives" value="3"/>
+            <parameter key="random_splits" value="false"/>
+            <parameter key="guess_subset_ratio" value="true"/>
+            <parameter key="subset_ratio" value="0.2"/>
+            <parameter key="voting_strategy" value="confidence vote"/>
+            <parameter key="use_local_random_seed" value="false"/>
+            <parameter key="local_random_seed" value="1992"/>
+            <parameter key="enable_parallel_execution" value="true"/>
+          </operator>
+          <connect from_port="training" to_op="Random Forest (2)" to_port="training set"/>
+          <connect from_op="Random Forest (2)" from_port="model" to_port="model"/>
+          <portSpacing port="source_training" spacing="0"/>
+          <portSpacing port="sink_model" spacing="0"/>
+          <portSpacing port="sink_through 1" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model (3)" width="90" x="112" y="34">
+            <list key="application_parameters"/>
+            <parameter key="create_view" value="false"/>
+          </operator>
+          <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance (2)" width="90" x="313" y="34">
+            <parameter key="manually_set_positive_class" value="false"/>
+            <parameter key="main_criterion" value="AUC"/>
+            <parameter key="accuracy" value="true"/>
+            <parameter key="classification_error" value="false"/>
+            <parameter key="kappa" value="false"/>
+            <parameter key="AUC (optimistic)" value="false"/>
+            <parameter key="AUC" value="false"/>
+            <parameter key="AUC (pessimistic)" value="false"/>
+            <parameter key="precision" value="false"/>
+            <parameter key="recall" value="false"/>
+            <parameter key="lift" value="false"/>
+            <parameter key="fallout" value="false"/>
+            <parameter key="f_measure" value="false"/>
+            <parameter key="false_positive" value="false"/>
+            <parameter key="false_negative" value="false"/>
+            <parameter key="true_positive" value="false"/>
+            <parameter key="true_negative" value="false"/>
+            <parameter key="sensitivity" value="false"/>
+            <parameter key="specificity" value="false"/>
+            <parameter key="youden" value="false"/>
+            <parameter key="positive_predictive_value" value="false"/>
+            <parameter key="negative_predictive_value" value="false"/>
+            <parameter key="psep" value="false"/>
+            <parameter key="skip_undefined_labels" value="true"/>
+            <parameter key="use_example_weights" value="true"/>
+          </operator>
+          <connect from_port="model" to_op="Apply Model (3)" to_port="model"/>
+          <connect from_port="test set" to_op="Apply Model (3)" to_port="unlabelled data"/>
+          <connect from_op="Apply Model (3)" from_port="labelled data" to_op="Performance (2)" to_port="labelled data"/>
+          <connect from_op="Performance (2)" from_port="performance" to_port="averagable 1"/>
+          <portSpacing port="source_model" spacing="0"/>
+          <portSpacing port="source_test set" spacing="0"/>
+          <portSpacing port="source_through 1" spacing="0"/>
+          <portSpacing port="sink_averagable 1" spacing="0"/>
+          <portSpacing port="sink_averagable 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model 93" width="90" x="581" y="34">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute createResultFile" width="90" x="782" y="136">
+      <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance 93-94" width="90" x="715" y="34">
+        <parameter key="manually_set_positive_class" value="false"/>
+        <parameter key="main_criterion" value="AUC"/>
+        <parameter key="accuracy" value="true"/>
+        <parameter key="classification_error" value="false"/>
+        <parameter key="kappa" value="false"/>
+        <parameter key="AUC (optimistic)" value="false"/>
+        <parameter key="AUC" value="true"/>
+        <parameter key="AUC (pessimistic)" value="false"/>
+        <parameter key="precision" value="false"/>
+        <parameter key="recall" value="false"/>
+        <parameter key="lift" value="false"/>
+        <parameter key="fallout" value="false"/>
+        <parameter key="f_measure" value="false"/>
+        <parameter key="false_positive" value="false"/>
+        <parameter key="false_negative" value="false"/>
+        <parameter key="true_positive" value="false"/>
+        <parameter key="true_negative" value="false"/>
+        <parameter key="sensitivity" value="false"/>
+        <parameter key="specificity" value="false"/>
+        <parameter key="youden" value="false"/>
+        <parameter key="positive_predictive_value" value="false"/>
+        <parameter key="negative_predictive_value" value="false"/>
+        <parameter key="psep" value="false"/>
+        <parameter key="skip_undefined_labels" value="true"/>
+        <parameter key="use_example_weights" value="true"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="9.4.001" expanded="true" height="103" name="Multiply 95" width="90" x="581" y="340"/>
+      <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model 94" width="90" x="715" y="187">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance 94-95" width="90" x="849" y="187">
+        <parameter key="manually_set_positive_class" value="false"/>
+        <parameter key="main_criterion" value="AUC"/>
+        <parameter key="accuracy" value="true"/>
+        <parameter key="classification_error" value="false"/>
+        <parameter key="kappa" value="false"/>
+        <parameter key="AUC (optimistic)" value="false"/>
+        <parameter key="AUC" value="true"/>
+        <parameter key="AUC (pessimistic)" value="false"/>
+        <parameter key="precision" value="false"/>
+        <parameter key="recall" value="false"/>
+        <parameter key="lift" value="false"/>
+        <parameter key="fallout" value="false"/>
+        <parameter key="f_measure" value="false"/>
+        <parameter key="false_positive" value="false"/>
+        <parameter key="false_negative" value="false"/>
+        <parameter key="true_positive" value="false"/>
+        <parameter key="true_negative" value="false"/>
+        <parameter key="sensitivity" value="false"/>
+        <parameter key="specificity" value="false"/>
+        <parameter key="youden" value="false"/>
+        <parameter key="positive_predictive_value" value="false"/>
+        <parameter key="negative_predictive_value" value="false"/>
+        <parameter key="psep" value="false"/>
+        <parameter key="skip_undefined_labels" value="true"/>
+        <parameter key="use_example_weights" value="true"/>
+      </operator>
+      <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest 95" width="90" x="715" y="340">
+        <parameter key="number_of_trees" value="100"/>
+        <parameter key="criterion" value="gain_ratio"/>
+        <parameter key="maximal_depth" value="10"/>
+        <parameter key="apply_pruning" value="false"/>
+        <parameter key="confidence" value="0.1"/>
+        <parameter key="apply_prepruning" value="false"/>
+        <parameter key="minimal_gain" value="0.01"/>
+        <parameter key="minimal_leaf_size" value="2"/>
+        <parameter key="minimal_size_for_split" value="4"/>
+        <parameter key="number_of_prepruning_alternatives" value="3"/>
+        <parameter key="random_splits" value="false"/>
+        <parameter key="guess_subset_ratio" value="true"/>
+        <parameter key="subset_ratio" value="0.2"/>
+        <parameter key="voting_strategy" value="confidence vote"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="enable_parallel_execution" value="true"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="9.4.001" expanded="true" height="103" name="Multiply 96" width="90" x="715" y="493"/>
+      <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model 95" width="90" x="849" y="340">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <operator activated="true" class="performance_binominal_classification" compatibility="9.4.001" expanded="true" height="82" name="Performance 95-96" width="90" x="983" y="340">
+        <parameter key="manually_set_positive_class" value="false"/>
+        <parameter key="main_criterion" value="AUC"/>
+        <parameter key="accuracy" value="true"/>
+        <parameter key="classification_error" value="false"/>
+        <parameter key="kappa" value="false"/>
+        <parameter key="AUC (optimistic)" value="false"/>
+        <parameter key="AUC" value="true"/>
+        <parameter key="AUC (pessimistic)" value="false"/>
+        <parameter key="precision" value="false"/>
+        <parameter key="recall" value="false"/>
+        <parameter key="lift" value="false"/>
+        <parameter key="fallout" value="false"/>
+        <parameter key="f_measure" value="false"/>
+        <parameter key="false_positive" value="false"/>
+        <parameter key="false_negative" value="false"/>
+        <parameter key="true_positive" value="false"/>
+        <parameter key="true_negative" value="false"/>
+        <parameter key="sensitivity" value="false"/>
+        <parameter key="specificity" value="false"/>
+        <parameter key="youden" value="false"/>
+        <parameter key="positive_predictive_value" value="false"/>
+        <parameter key="negative_predictive_value" value="false"/>
+        <parameter key="psep" value="false"/>
+        <parameter key="skip_undefined_labels" value="true"/>
+        <parameter key="use_example_weights" value="true"/>
+      </operator>
+      <operator activated="true" class="model_simulator:robust_performance_average" compatibility="9.4.001" expanded="true" height="124" name="Performance Average (Robust)" width="90" x="1251" y="34"/>
+      <operator activated="true" class="concurrency:parallel_random_forest" compatibility="9.4.001" expanded="true" height="103" name="Random Forest 96" width="90" x="849" y="493">
+        <parameter key="number_of_trees" value="100"/>
+        <parameter key="criterion" value="gain_ratio"/>
+        <parameter key="maximal_depth" value="10"/>
+        <parameter key="apply_pruning" value="false"/>
+        <parameter key="confidence" value="0.1"/>
+        <parameter key="apply_prepruning" value="false"/>
+        <parameter key="minimal_gain" value="0.01"/>
+        <parameter key="minimal_leaf_size" value="2"/>
+        <parameter key="minimal_size_for_split" value="4"/>
+        <parameter key="number_of_prepruning_alternatives" value="3"/>
+        <parameter key="random_splits" value="false"/>
+        <parameter key="guess_subset_ratio" value="true"/>
+        <parameter key="subset_ratio" value="0.2"/>
+        <parameter key="voting_strategy" value="confidence vote"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="enable_parallel_execution" value="true"/>
+      </operator>
+      <operator activated="true" class="group_models" compatibility="9.4.001" expanded="true" height="145" name="Group Models" width="90" x="1251" y="187"/>
+      <operator activated="true" class="apply_model" compatibility="9.4.001" expanded="true" height="82" name="Apply Model" width="90" x="1452" y="187">
+        <list key="application_parameters"/>
+        <parameter key="create_view" value="false"/>
+      </operator>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute createResultFile" width="90" x="1586" y="187">
         <parameter key="process_location" value="createResultFile"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -109,10 +547,35 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <connect from_op="Retrieve loanTrainProcessed" from_port="output" to_op="Validation" to_port="training"/>
-      <connect from_op="Validation" from_port="model" to_op="Apply Model" to_port="model"/>
-      <connect from_op="Validation" from_port="averagable 1" to_port="result 1"/>
+      <connect from_op="Retrieve loanTrainProcessed" from_port="output" to_op="Filter Year 93" to_port="example set input"/>
+      <connect from_op="Filter Year 93" from_port="example set output" to_op="Random Forest 93" to_port="training set"/>
+      <connect from_op="Filter Year 93" from_port="unmatched example set" to_op="Filter Year 94" to_port="example set input"/>
+      <connect from_op="Random Forest 93" from_port="model" to_op="Apply Model 93" to_port="model"/>
+      <connect from_op="Filter Year 94" from_port="example set output" to_op="Multiply 94" to_port="input"/>
+      <connect from_op="Filter Year 94" from_port="unmatched example set" to_op="Filter Year 95" to_port="example set input"/>
+      <connect from_op="Filter Year 95" from_port="example set output" to_op="Multiply 95" to_port="input"/>
+      <connect from_op="Filter Year 95" from_port="unmatched example set" to_op="Multiply 96" to_port="input"/>
       <connect from_op="Retrieve loanTestProcessed" from_port="output" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Multiply 94" from_port="output 1" to_op="Apply Model 93" to_port="unlabelled data"/>
+      <connect from_op="Multiply 94" from_port="output 2" to_op="Random Forest 94" to_port="training set"/>
+      <connect from_op="Random Forest 94" from_port="model" to_op="Apply Model 94" to_port="model"/>
+      <connect from_op="Apply Model 93" from_port="labelled data" to_op="Performance 93-94" to_port="labelled data"/>
+      <connect from_op="Apply Model 93" from_port="model" to_op="Group Models" to_port="models in 1"/>
+      <connect from_op="Performance 93-94" from_port="performance" to_op="Performance Average (Robust)" to_port="performance vectors 1"/>
+      <connect from_op="Multiply 95" from_port="output 1" to_op="Apply Model 94" to_port="unlabelled data"/>
+      <connect from_op="Multiply 95" from_port="output 2" to_op="Random Forest 95" to_port="training set"/>
+      <connect from_op="Apply Model 94" from_port="labelled data" to_op="Performance 94-95" to_port="labelled data"/>
+      <connect from_op="Apply Model 94" from_port="model" to_op="Group Models" to_port="models in 2"/>
+      <connect from_op="Performance 94-95" from_port="performance" to_op="Performance Average (Robust)" to_port="performance vectors 2"/>
+      <connect from_op="Random Forest 95" from_port="model" to_op="Apply Model 95" to_port="model"/>
+      <connect from_op="Multiply 96" from_port="output 1" to_op="Apply Model 95" to_port="unlabelled data"/>
+      <connect from_op="Multiply 96" from_port="output 2" to_op="Random Forest 96" to_port="training set"/>
+      <connect from_op="Apply Model 95" from_port="labelled data" to_op="Performance 95-96" to_port="labelled data"/>
+      <connect from_op="Apply Model 95" from_port="model" to_op="Group Models" to_port="models in 3"/>
+      <connect from_op="Performance 95-96" from_port="performance" to_op="Performance Average (Robust)" to_port="performance vectors 3"/>
+      <connect from_op="Performance Average (Robust)" from_port="average" to_port="result 1"/>
+      <connect from_op="Random Forest 96" from_port="model" to_op="Group Models" to_port="models in 4"/>
+      <connect from_op="Group Models" from_port="model out" to_op="Apply Model" to_port="model"/>
       <connect from_op="Apply Model" from_port="labelled data" to_op="Execute createResultFile" to_port="input 1"/>
       <connect from_op="Execute createResultFile" from_port="result 1" to_port="result 2"/>
       <portSpacing port="source_input 1" spacing="0"/>

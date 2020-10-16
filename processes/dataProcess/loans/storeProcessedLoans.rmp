@@ -13,7 +13,7 @@
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loan_train" width="90" x="112" y="34">
-        <parameter key="repository_entry" value="../../data/loan_train"/>
+        <parameter key="repository_entry" value="../../../data/loan_train"/>
       </operator>
       <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute processLoans" width="90" x="246" y="34">
         <parameter key="process_location" value="processLoans"/>
@@ -25,10 +25,10 @@
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
       <operator activated="true" class="store" compatibility="9.4.001" expanded="true" height="68" name="Store (2)" width="90" x="380" y="34">
-        <parameter key="repository_entry" value="../../processed_data/loanTrainProcessed"/>
+        <parameter key="repository_entry" value="../../../processed_data/loanTrainProcessed"/>
       </operator>
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loan_test" width="90" x="112" y="136">
-        <parameter key="repository_entry" value="../../data/loan_test"/>
+        <parameter key="repository_entry" value="../../../data/loan_test"/>
       </operator>
       <operator activated="true" class="productivity:execute_process" compatibility="9.4.001" expanded="true" height="68" name="Execute processLoans (2)" width="90" x="246" y="136">
         <parameter key="process_location" value="processLoans"/>
@@ -40,7 +40,7 @@
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
       <operator activated="true" class="store" compatibility="9.4.001" expanded="true" height="68" name="Store" width="90" x="380" y="136">
-        <parameter key="repository_entry" value="../../processed_data/loanTestProcessed"/>
+        <parameter key="repository_entry" value="../../../processed_data/loanTestProcessed"/>
       </operator>
       <connect from_op="Retrieve loan_train" from_port="output" to_op="Execute processLoans" to_port="input 1"/>
       <connect from_op="Execute processLoans" from_port="result 1" to_op="Store (2)" to_port="input"/>

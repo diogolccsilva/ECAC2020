@@ -44,6 +44,15 @@
         </list>
         <parameter key="keep_all" value="true"/>
       </operator>
+      <operator activated="true" class="write_excel" compatibility="9.4.001" expanded="true" height="103" name="Write Excel" width="90" x="782" y="34">
+        <parameter key="excel_file" value="C:\Users\Diogo\Documents\GitHub\ECAC2020\result\dateAnalysis.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <enumeration key="sheet_names"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
       <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTestProcessed" width="90" x="45" y="187">
         <parameter key="repository_entry" value="../../processed_data/loanTestProcessed"/>
       </operator>
@@ -64,13 +73,12 @@
       <connect from_op="Retrieve loanTrainProcessed" from_port="output" to_op="Select Attributes" to_port="example set input"/>
       <connect from_op="Select Attributes" from_port="example set output" to_op="Pivot" to_port="input"/>
       <connect from_op="Pivot" from_port="output" to_op="Generate Attributes" to_port="example set input"/>
-      <connect from_op="Generate Attributes" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Generate Attributes" from_port="example set output" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
       <connect from_op="Retrieve loanTestProcessed" from_port="output" to_op="Select Attributes (2)" to_port="example set input"/>
-      <connect from_op="Select Attributes (2)" from_port="example set output" to_port="result 2"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
-      <portSpacing port="sink_result 3" spacing="0"/>
     </process>
   </operator>
 </process>
