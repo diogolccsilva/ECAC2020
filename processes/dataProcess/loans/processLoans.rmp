@@ -48,7 +48,15 @@
         <parameter key="invert_selection" value="true"/>
         <parameter key="include_special_attributes" value="false"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addAccountInfo" width="90" x="514" y="34">
+      <operator activated="true" class="rename" compatibility="9.8.000" expanded="true" height="82" name="Rename" width="90" x="514" y="34">
+        <parameter key="old_name" value="amount"/>
+        <parameter key="new_name" value="Loan Amount"/>
+        <list key="rename_additional_attributes">
+          <parameter key="duration" value="Loan Duration"/>
+          <parameter key="payments" value="Loan Payments"/>
+        </list>
+      </operator>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addAccountInfo" width="90" x="648" y="34">
         <parameter key="process_location" value="addAccountInfo"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -57,7 +65,7 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addNumberOfClients" width="90" x="648" y="34">
+      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addNumberOfClients" width="90" x="782" y="34">
         <parameter key="process_location" value="addNumberOfClients"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -66,7 +74,7 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addClientInfo" width="90" x="782" y="34">
+      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addClientInfo" width="90" x="916" y="34">
         <parameter key="process_location" value="addClientInfo"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -75,7 +83,7 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addDistrictInfo" width="90" x="916" y="34">
+      <operator activated="true" class="productivity:execute_process" compatibility="9.8.000" expanded="true" height="68" name="Execute addDistrictInfo" width="90" x="1050" y="34">
         <parameter key="process_location" value="addDistrictInfo"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -84,7 +92,7 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <operator activated="true" class="select_attributes" compatibility="9.8.000" expanded="true" height="82" name="Select Attributes (2)" width="90" x="1050" y="34">
+      <operator activated="true" class="select_attributes" compatibility="9.8.000" expanded="true" height="82" name="Select Attributes (2)" width="90" x="1184" y="34">
         <parameter key="attribute_filter_type" value="subset"/>
         <parameter key="attribute" value="account_id"/>
         <parameter key="attributes" value="|account_id|district_id"/>
@@ -98,15 +106,22 @@
         <parameter key="invert_selection" value="true"/>
         <parameter key="include_special_attributes" value="false"/>
       </operator>
+      <operator activated="true" class="rename" compatibility="9.8.000" expanded="true" height="82" name="Rename (2)" width="90" x="1318" y="34">
+        <parameter key="old_name" value="frequency"/>
+        <parameter key="new_name" value="Payment Frequency"/>
+        <list key="rename_additional_attributes"/>
+      </operator>
       <connect from_port="input 1" to_op="Generate Attributes" to_port="example set input"/>
       <connect from_op="Generate Attributes" from_port="example set output" to_op="Numerical to Polynominal" to_port="example set input"/>
       <connect from_op="Numerical to Polynominal" from_port="example set output" to_op="Select Attributes" to_port="example set input"/>
-      <connect from_op="Select Attributes" from_port="example set output" to_op="Execute addAccountInfo" to_port="input 1"/>
+      <connect from_op="Select Attributes" from_port="example set output" to_op="Rename" to_port="example set input"/>
+      <connect from_op="Rename" from_port="example set output" to_op="Execute addAccountInfo" to_port="input 1"/>
       <connect from_op="Execute addAccountInfo" from_port="result 1" to_op="Execute addNumberOfClients" to_port="input 1"/>
       <connect from_op="Execute addNumberOfClients" from_port="result 1" to_op="Execute addClientInfo" to_port="input 1"/>
       <connect from_op="Execute addClientInfo" from_port="result 1" to_op="Execute addDistrictInfo" to_port="input 1"/>
       <connect from_op="Execute addDistrictInfo" from_port="result 1" to_op="Select Attributes (2)" to_port="example set input"/>
-      <connect from_op="Select Attributes (2)" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Select Attributes (2)" from_port="example set output" to_op="Rename (2)" to_port="example set input"/>
+      <connect from_op="Rename (2)" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="source_input 2" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
