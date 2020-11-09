@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.4.001">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.8.000">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.4.001" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.8.000" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -12,11 +12,11 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="112" y="34">
+      <operator activated="true" class="retrieve" compatibility="9.8.000" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="112" y="34">
         <parameter key="repository_entry" value="//ECAC2020/processed_data/loanTrainProcessed"/>
       </operator>
-      <operator activated="true" class="blending:pivot" compatibility="9.4.001" expanded="true" height="82" name="Pivot" width="90" x="313" y="34">
-        <parameter key="group_by_attributes" value="sex"/>
+      <operator activated="true" class="blending:pivot" compatibility="9.6.000" expanded="true" height="82" name="Pivot" width="90" x="313" y="34">
+        <parameter key="group_by_attributes" value="Sex"/>
         <parameter key="column_grouping_attribute" value="status"/>
         <list key="aggregation_attributes">
           <parameter key="status" value="count"/>
@@ -24,7 +24,7 @@
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="default_aggregation_function" value="first"/>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="9.4.001" expanded="true" height="82" name="Generate Attributes" width="90" x="581" y="34">
+      <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes" width="90" x="581" y="34">
         <list key="function_descriptions">
           <parameter key="unpaidPercent" value="[count(status)_-1]/([count(status)_-1]+[count(status)_1])*100"/>
           <parameter key="totalLoans" value="[count(status)_-1]+[count(status)_1]"/>

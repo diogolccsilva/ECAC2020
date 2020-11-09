@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.4.001">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.8.000">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.4.001" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.8.000" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -12,10 +12,10 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.4.001" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="112" y="34">
+      <operator activated="true" class="retrieve" compatibility="9.8.000" expanded="true" height="68" name="Retrieve loanTrainProcessed" width="90" x="112" y="34">
         <parameter key="repository_entry" value="//ECAC2020/processed_data/loanTrainProcessed"/>
       </operator>
-      <operator activated="true" class="select_attributes" compatibility="9.4.001" expanded="true" height="82" name="Select Attributes" width="90" x="313" y="34">
+      <operator activated="true" class="select_attributes" compatibility="9.8.000" expanded="true" height="82" name="Select Attributes" width="90" x="313" y="34">
         <parameter key="attribute_filter_type" value="subset"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value="ClientAge|status"/>
@@ -29,13 +29,13 @@
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="true"/>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="9.4.001" expanded="true" height="82" name="Generate Attributes" width="90" x="514" y="34">
+      <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes" width="90" x="514" y="34">
         <list key="function_descriptions">
-          <parameter key="Age Gap" value="if(ClientAge&lt;25,&quot;&lt;25&quot;,if(ClientAge&lt;50,&quot;&lt;50&quot;,&quot;&gt;=50&quot;))"/>
+          <parameter key="Age Gap" value="if(ClientAge&lt;25,&quot;Less than 25&quot;,if(ClientAge&lt;50,&quot;From 25 to 50&quot;,&quot;More than 50&quot;))"/>
         </list>
         <parameter key="keep_all" value="true"/>
       </operator>
-      <operator activated="true" class="blending:pivot" compatibility="9.4.001" expanded="true" height="82" name="Pivot" width="90" x="715" y="34">
+      <operator activated="true" class="blending:pivot" compatibility="9.6.000" expanded="true" height="82" name="Pivot" width="90" x="715" y="34">
         <parameter key="group_by_attributes" value="Age Gap"/>
         <parameter key="column_grouping_attribute" value="status"/>
         <list key="aggregation_attributes">
@@ -44,9 +44,10 @@
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="default_aggregation_function" value="first"/>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="9.4.001" expanded="true" height="82" name="Generate Attributes (2)" width="90" x="849" y="34">
+      <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes (2)" width="90" x="849" y="34">
         <list key="function_descriptions">
           <parameter key="UnpaidPercent" value="[count(status)_-1]/([count(status)_-1]+[count(status)_1])*100"/>
+          <parameter key="Total Loans" value="[count(status)_-1]+[count(status)_1]"/>
         </list>
         <parameter key="keep_all" value="true"/>
       </operator>

@@ -134,7 +134,14 @@
         <parameter key="data_management" value="auto"/>
         <parameter key="merge_type" value="all"/>
       </operator>
-      <operator activated="true" class="store" compatibility="9.8.000" expanded="true" height="68" name="Store" width="90" x="2189" y="85">
+      <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes (3)" width="90" x="2189" y="85">
+        <list key="function_descriptions">
+          <parameter key="unemploymentGrowth" value="([unemploymant rate '96 ]-[unemploymant rate '95 ])/[unemploymant rate '95 ]*100"/>
+          <parameter key="commitedCrimesGrowth" value="([no. of commited crimes '96 ]-[no. of commited crimes '95 ])/[no. of commited crimes '95 ]*100"/>
+        </list>
+        <parameter key="keep_all" value="true"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="9.8.000" expanded="true" height="68" name="Store" width="90" x="2390" y="85">
         <parameter key="repository_entry" value="../../processed_data/districtProcessed"/>
       </operator>
       <connect from_op="Retrieve district" from_port="output" to_op="Parse Numbers" to_port="example set input"/>
@@ -155,7 +162,8 @@
       <connect from_op="Select Attributes (3)" from_port="example set output" to_op="Append" to_port="example set 2"/>
       <connect from_op="Select Attributes (4)" from_port="example set output" to_op="Append" to_port="example set 1"/>
       <connect from_op="Append" from_port="merged set" to_op="Append (2)" to_port="example set 1"/>
-      <connect from_op="Append (2)" from_port="merged set" to_op="Store" to_port="input"/>
+      <connect from_op="Append (2)" from_port="merged set" to_op="Generate Attributes (3)" to_port="example set input"/>
+      <connect from_op="Generate Attributes (3)" from_port="example set output" to_op="Store" to_port="input"/>
       <connect from_op="Store" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>

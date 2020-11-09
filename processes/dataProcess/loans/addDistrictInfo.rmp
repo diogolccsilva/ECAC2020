@@ -34,6 +34,8 @@
         <parameter key="new_name" value="District Average Salary"/>
         <list key="rename_additional_attributes">
           <parameter key="ratio of urban inhabitants " value="District Urban Inhabitants Ratio"/>
+          <parameter key="commitedCrimesGrowth" value="District CC Growth"/>
+          <parameter key="unemploymentGrowth" value="District UR Growth"/>
         </list>
       </operator>
       <operator activated="true" class="concurrency:join" compatibility="9.8.000" expanded="true" height="82" name="Join" width="90" x="514" y="34">

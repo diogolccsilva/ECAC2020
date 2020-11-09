@@ -12,8 +12,8 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.8.000" expanded="true" height="68" name="Retrieve calculatedSalary" width="90" x="45" y="187">
-        <parameter key="repository_entry" value="//ECAC2020/processed_data/calculatedSalary"/>
+      <operator activated="true" class="retrieve" compatibility="9.8.000" expanded="true" height="68" name="Retrieve transactionsSummary" width="90" x="45" y="187">
+        <parameter key="repository_entry" value="../../../processed_data/transactionsSummary"/>
       </operator>
       <operator activated="true" class="concurrency:join" compatibility="9.8.000" expanded="true" height="82" name="Join" width="90" x="246" y="34">
         <parameter key="remove_double_attributes" value="true"/>
@@ -27,9 +27,9 @@
       <operator activated="true" class="replace_missing_values" compatibility="9.8.000" expanded="true" height="103" name="Replace Missing Values" width="90" x="447" y="34">
         <parameter key="return_preprocessing_model" value="false"/>
         <parameter key="create_view" value="false"/>
-        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute_filter_type" value="subset"/>
         <parameter key="attribute" value="Average Salary"/>
-        <parameter key="attributes" value=""/>
+        <parameter key="attributes" value="|Average Income|Average Withdrawals|Average Cash Credits|Monthly Cash Credits|Monthly Withdrawals|Months Of Transactions|Total Cash Credits|Total Withdrawals"/>
         <parameter key="use_except_expression" value="false"/>
         <parameter key="value_type" value="attribute_value"/>
         <parameter key="use_value_type_exception" value="false"/>
@@ -39,12 +39,12 @@
         <parameter key="except_block_type" value="value_matrix_row_start"/>
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="false"/>
-        <parameter key="default" value="value"/>
+        <parameter key="default" value="zero"/>
         <list key="columns"/>
         <parameter key="replenishment_value" value="0"/>
       </operator>
       <connect from_port="input 1" to_op="Join" to_port="left"/>
-      <connect from_op="Retrieve calculatedSalary" from_port="output" to_op="Join" to_port="right"/>
+      <connect from_op="Retrieve transactionsSummary" from_port="output" to_op="Join" to_port="right"/>
       <connect from_op="Join" from_port="join" to_op="Replace Missing Values" to_port="example set input"/>
       <connect from_op="Replace Missing Values" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
